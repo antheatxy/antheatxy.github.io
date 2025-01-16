@@ -1,0 +1,447 @@
+<html>
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> IMDA Bite-sized AI content </title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Cinzel:wght@400..900&family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&family=Monsieur+La+Doulaise&family=Raleway+Dots&family=Sarpanch:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400..800&family=Titillium+Web:wght@200&display=swap" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Space Mono", serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 1.5rem;
+                color: #000000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+                background-color: transparent;
+                flex-direction: column;  /* Ensure that content stacks vertically in body */
+            }
+            .container {
+                position: relative;
+                max-width: 960px;
+                width: 100%;
+                height: 540px;
+                background-color: rgb(206, 241, 255); /* temporary background color for debugging */
+                background-size: cover;
+                background-position: center;
+                border-radius: 20px;
+                box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .carousel-container {
+                position: relative;
+                max-width: 960px;
+                width: 90%;
+                height: 500px; /* Fixed height */
+                background-color: white;
+                background-size: cover;
+                background-position: center;
+                border-radius: 10px;
+                box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                text-align: center;
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 30px;
+                margin-top: -30px;
+                margin-left: 42;
+                position: relative;
+                flex-direction: column; /* Keep header at the top, content below */
+            }
+
+
+            .carousel-controls {
+                display: flex;
+                justify-content: space-between;
+                position: absolute;
+                top: 90%;
+                width: 20%;
+                transform: translateY(-50%);
+                z-index: 1;
+                padding: 10px;
+            }
+
+            .carousel-controls button {
+                background: none;
+                border: none;
+                font-size: 2rem;
+                font-weight: bold;
+                cursor: pointer;
+                color: #333;
+            }
+
+            .carousel-controls button:hover {
+                color: #555;
+            }
+
+            .slider {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+            }
+
+            .slide {
+                flex: 0 0 100%; /* Each slide takes full width */
+                display: none;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .slide.active {
+                display: flex;
+            }
+
+            .split-view {
+                display: flex; 
+                width: 100%;  /* Full width for split view */
+            }
+
+            .slider {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+            }
+
+            .slide {
+                flex: 0 0 100%;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .slide.active {
+                display: flex;
+            }
+
+            /* Style for the entire split view */
+            .split-view {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            /* Columns that hold the Human/AI content */
+            .column {
+                flex: 1; /* Ensures columns have equal width */
+                padding: 10px;
+                text-align: center;
+            }
+
+            /* Heading style */
+            .column-heading {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
+
+            /* Style for media (image, video, audio) */
+            .media {
+                margin-bottom: 20px; /* Spacing between media and explanation */
+            }
+
+            /* Image and video styling */
+            .media img {
+                width: 100%;         /* Full-width scaling */
+                max-width: 480px;    /* Restrict to a max-width for visuals */
+                height: auto;
+                border-radius: 8px;
+            }
+            .media video {
+                width: 100%;         /* Full-width scaling */
+                max-width: 480px;    /* Restrict to a max-width for visuals */
+                height: 63%;
+                border-radius: 8px;
+            }
+            /* Custom audio player styling */
+            .custom-audio-player {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 60px;
+                background-color: #f0f0f0;
+                border-radius: 10px;
+                padding: 10px 20px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+           
+
+            /* Explanation section (text) styling */
+            .explanation {
+                font-size: 14px;
+                color: #555;
+                margin-top: 10px; /* Spacing above explanation */
+            }
+
+
+            .indicator {
+                font-size: 1.2rem;
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                color: #555;
+            }
+            /* Navigation Container */
+            .navigation-container {
+                position: absolute;
+                top: 15px; /* Padding from top edge */
+                left: 15px; /* Padding from left edge */
+                z-index: 2; /* Ensure it stays on top */
+                padding: 10px;
+            }
+
+
+            .nav-button {
+                 background-color: #cb2020;
+                color: #333;
+                border: none;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                font-size: 1.5rem;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.3s, transform 0.3s;
+                z-index: 11;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+            }
+    
+
+            .nav-button:hover {
+                background-color: #d34a4a;
+                transform: scale(1.1);
+            }
+
+            .nav-button:active {
+                background-color: #872727;
+                transform: scale(1.05);
+            }
+
+            /* Animations */
+            @keyframes move-avatar {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            @keyframes bounceIn {
+                0% {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="navigation-container">
+                <a href="page4.html" class="nav-button">x</a>
+                <div class="carousel-container">
+                    <div class="carousel-controls">
+                        <button id="prev">⬅️</button>
+                        <button id="next">➡️</button>
+                    </div>
+                    <div class="slider">
+                        <!-- Split View Slide: Human vs AI -->
+                        <div class="slide active">
+                            <div class="split-view">
+                                <div class="column">
+                                    <h3 class="column-heading">Human</h3> <!-- Heading for Human -->
+                                    <div class="media">
+                                        <img src="human gen image.HEIC" alt="Human Image">
+                                    </div>
+                                    <div class="explanation">
+                                        <p>Human characteristics and natural patterns.</p>
+                                    </div>
+                                </div>
+                    
+                                <div class="column">
+                                    <h3 class="column-heading">AI</h3> <!-- Heading for AI -->
+                                    <div class="media">
+                                        <img src="ai image.jpg" alt="AI Image">
+                                    </div>
+                                    <div class="explanation">
+                                        <p>AI can produce flawless, repeated patterns. (Generated by Leonardo.ai)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Split View Slide: AI Video -->
+                        <div class="slide">
+                            <div class="split-view">
+                                <div class="column">
+                                    <h3 class="column-heading">Human</h3> <!-- Heading for Human -->
+                                    <div class="media">
+                                        <video controls>
+                                            <source src="human video.MOV" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="explanation">
+                                        <p>Video example showing human-like characteristics.</p>
+                                    </div>
+                                </div>
+                    
+                                <div class="column">
+                                    <h3 class="column-heading">AI</h3> <!-- Heading for AI -->
+                                    <div class="media">
+                                        <video controls>
+                                            <source src="ai video.mp4" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="explanation">
+                                        <p>AI-generated video showcasing patterns and repetitions. (Generated by Imagine.art)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Split View Slide: AI Audio -->
+                        <div class="slide">
+                            <div class="split-view">
+                                <div class="column">
+                                    <h3 class="column-heading">Human</h3> <!-- Heading for Human -->
+                                    <div class="media">
+                                        <video controls>
+                                            <source src="Untitled 3.mov" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="explanation">
+                                        <p>Igloo by Kiss of Life (on Spotify) -- Audio example demonstrating natural, human sound.</p>
+                                    </div>
+                                </div>
+                    
+                                <div class="column">
+                                    <h3 class="column-heading">AI</h3> <!-- Heading for AI -->
+                                    <div class="media">
+                                        <video controls>
+                                            <source src="Untitled 4.mov" type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <div class="explanation">
+                                        <p>Igloo -- AI-generated audio that mirrors human sounds and patterns. (Generated by AI Music Factory)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                     
+            
+                    <div class="indicator" id="indicator">1/3</div>
+                </div>
+                <script>
+                    const slides = document.querySelectorAll(".slide");
+                    const prevButton = document.getElementById("prev");
+                    const nextButton = document.getElementById("next");
+                    const closeButton = document.getElementById("close-button");
+                    const indicator = document.getElementById("indicator");
+            
+                    let currentIndex = 0;
+            
+                    const updateSlides = () => {
+                        slides.forEach((slide, index) => {
+                            slide.classList.remove("active");
+                            if (index === currentIndex) {
+                                slide.classList.add("active");
+                            }
+                        });
+                        indicator.textContent = `${currentIndex + 1}/${slides.length}`;
+                    };
+            
+                    nextButton.addEventListener("click", () => {
+                        currentIndex = (currentIndex + 1) % slides.length;
+                        updateSlides();
+                    });
+            
+                    prevButton.addEventListener("click", () => {
+                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                        updateSlides();
+                    });
+            
+                    closeButton.addEventListener("click", () => {
+                        alert("Carousel closed.");
+                    });
+            
+                    // Initialize the carousel
+                    updateSlides();
+                </script>
+                <script>
+    // Wait for the DOM to fully load
+    document.addEventListener("DOMContentLoaded", () => {
+        // Find the play button and the audio element
+        const playButton = document.querySelector(".play-btn");
+        const audioElement = document.querySelector(".audio");
+
+        // Add a click event listener to the play button
+        playButton.addEventListener("click", () => {
+            if (audioElement.paused) {
+                // Play the audio if it is paused
+                audioElement.play();
+                playButton.textContent = "⏸️"; // Change button to a pause symbol
+            } else {
+                // Pause the audio if it is playing
+                audioElement.pause();
+                playButton.textContent = "▶️"; // Change button to a play symbol
+            }
+        });
+    });
+</script>
+<script>
+    // Wait for the DOM to fully load
+    document.addEventListener("DOMContentLoaded", () => {
+        // Find the play button and the audio element
+        const playButton = document.querySelector(".play-btn");
+        const audioElement = document.querySelector(".audio");
+
+        // Add a click event listener to the play button
+        playButton.addEventListener("click", () => {
+            if (audioElement.paused) {
+                // Play the audio if it is paused
+                audioElement.play();
+                playButton.textContent = "⏸️"; // Change button to a pause symbol
+            } else {
+                // Pause the audio if it is playing
+                audioElement.pause();
+                playButton.textContent = "▶️"; // Change button to a play symbol
+            }
+        });
+    });
+</script>
+
+    </body>
+</html>
