@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f8ff; /* Light blue background */
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    #quiz-container {
+      background: #ffffff; /* White card */
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    #progress-bar {
+      height: 8px;
+      background: #e5e5e5;
+      width: 100%;
+      position: relative;
+    }
+
+    #progress {
+      height: 100%;
+      background: #4caf50; /* Green progress */
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px;
+      background-color: #e7f3ff;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #0066cc; /* Blue title */
+    }
+
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      width: 100%;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    .options button:hover {
+      background: #f0f8ff; /* Light blue hover */
+    }
+
+    .options button.correct {
+      background: #4caf50;
+      color: white;
+    }
+
+    .options button.incorrect {
+      background: #f44336;
+      color: white;
+    }
+
+    #comment {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    #score {
+      display: none;
+      text-align: center;
+      font-size: 1.5rem;
+      color: #333;
+      padding: 20px;
+    }
+
+    #congrats {
+      color: #4caf50;
+    }
+
+    #blame {
+      color: #f44336;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #f9f9f9;
+    }
+
+    .nav-buttons button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #005bb5;
+    }
+
+    .nav-buttons button:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <div id="progress-bar">
+      <div id="progress"></div>
+    </div>
+    <div class="header">
+      <h1>Quiz Time</h1>
+    </div>
+    <div class="content" id="quiz">
+      <p id="question-number">Question 1/10</p>
+      <p class="question"></p>
+      <div class="options"></div>
+      <p id="comment"></p>
+    </div>
+    <div id="score"></div>
+    <div class="nav-buttons">
+      <button id="prev" disabled>Previous</button>
+      <button id="next">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What would Anthea rather be doing right now?",
+        options: ["Coding!!!", "Writing FA1...", "Starting COMEIS Assignment 1", "Sleeping"],
+        answer: 3,
+        comment: "Anthea is dead tired :p."
+      },
+      {
+        question: "Which statement is correct?",
+        options: ["Hybe sucks", "Anthea is hungry", "Sleep is important", "All of the above"],
+        answer: 3,
+        comment: ":)"
+      },
+      {
+        question: "What pet does Anthea own?",
+        options: ["TF, she doesn't own one", "Older brother", "Cat", "Dog"],
+        answer: 0,
+        comment: "LOL"
+      },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const question = questions[currentQuestion];
+      $("#question-number").text(`Question ${currentQuestion + 1}/${questions.length}`);
+      $(".question").text(question.question);
+      $(".options").empty();
+      question.options.forEach((option, index) => {
+        $(".options").append(`<button data-index="${index}">${option}</button>`);
+      });
+      $("#comment").text("");
+    }
+
+    function updateProgressBar() {
+      const progress = ((currentQuestion + 1) / questions.length) * 100;
+      $("#progress").css("width", `${progress}%`);
+    }
+
+    $(document).ready(function () {
+      loadQuestion();
+      updateProgressBar();
+
+      $(".options").on("click", "button", function () {
+        $(".options button").attr("disabled", true);
+        const selected = $(this).data("index");
+        const question = questions[currentQuestion];
+
+        if (selected === question.answer) {
+          $(this).addClass("correct");
+          score++;
+        } else {
+          $(this).addClass("incorrect");
+          $(`.options button[data-index='${question.answer}']`).addClass("correct");
+        }
+
+        $("#comment").text(question.comment);
+
+        setTimeout(() => {
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            loadQuestion();
+            updateProgressBar();
+          } else {
+            $("#quiz").hide();
+            const msg = score < 2 ? "<h1 id='blame'>Study More!</h1>" : "<h1 id='congrats'>Great Job!</h1>";
+            $("#score").show().html(`${msg} You scored ${score} out of ${questions.length}!`);
+          }
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>
