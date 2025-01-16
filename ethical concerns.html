@@ -1,0 +1,183 @@
+<html>
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ethical Concerns in AI</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Space Mono", monospace;
+                color: #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+                background-color: rgb(240, 250, 254);
+                padding: 20px; /* Adds padding around the edges */
+            }
+            .container {
+                width: 80%;
+                max-width: 700px; /* Centers and adjusts width */
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                text-align: center;
+                background-color: white;
+                padding: 20px;
+                margin: auto; /* Centers the content vertically */
+            }
+            .carousel {
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+                margin-top: 20px;
+            }
+            .carousel-track {
+                display: flex;
+                transition: transform 0.5s ease;
+                gap: 10px;
+            }
+            .carousel-slide {
+                flex: 1 0 calc(100% - 20px);
+                background: #f9f9f9;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            }
+            .carousel-slide ul {
+                list-style: disc;
+                padding-left: 20px;
+                text-align: left;
+            }
+            .carousel-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+                margin-left: 250;
+                width: 20%;
+            }
+            .carousel-button {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                font-weight: bold;
+                cursor: pointer;
+                color: #333;
+            }
+            .carousel-button:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+            .carousel-button:hover {
+                color: #555;
+            }
+            .header {
+                background: #333;
+                color: white;
+                padding: 10px;
+                font-size: 1.5rem;
+                font-weight: bold;
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            .nav-button {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                background-color: #cb2020;
+                color: rgb(0, 0, 0);
+                border: none;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                font-size: 1.5rem;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+            }
+            .nav-button:hover {
+                background-color: #d34a4a;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="page4.html" class="nav-button">x</a>
+        <div class="container">
+            <div class="header">Ethical Concerns in AI</div>
+            <div class="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <h3>Bias and Fairness</h3>
+                        <p>AI systems can perpetuate biases present in training data, leading to discrimination in areas like hiring, lending, and law enforcement.</p>
+                        <ul>
+                            <li>Example: Face recognition tools misidentify certain demographics.</li>
+                            <li>Solution: Improve datasets and monitor biases actively.</li>
+                        </ul>
+                    </div>
+                    <div class="carousel-slide">
+                        <h3>Privacy Issues</h3>
+                        <p>AI relies on vast amounts of data, sometimes encroaching on privacy. Sensitive information could be exploited or mishandled.</p>
+                        <ul>
+                            <li>Example: AI tracking consumer behavior without consent.</li>
+                            <li>Solution: Enforce strict data protection laws.</li>
+                        </ul>
+                    </div>
+                    <div class="carousel-slide">
+                        <h3>Accountability Challenges</h3>
+                        <p>When AI causes harm or errors, determining responsibility becomes complicated. Legal frameworks struggle to keep up.</p>
+                        <ul>
+                            <li>Example: Self-driving cars causing accidents.</li>
+                            <li>Solution: Develop clear policies for AI accountability.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-button prev-button">⬅️</button>
+                    <button class="carousel-button next-button">➡️</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            const track = document.querySelector(".carousel-track");
+            const slides = Array.from(track.children);
+            const prevButton = document.querySelector(".prev-button");
+            const nextButton = document.querySelector(".next-button");
+            let currentSlideIndex = 0;
+
+            const updateButtons = () => {
+                prevButton.disabled = currentSlideIndex === 0;
+                nextButton.disabled = currentSlideIndex === slides.length - 1;
+            };
+
+            prevButton.addEventListener("click", () => {
+                if (currentSlideIndex > 0) {
+                    currentSlideIndex--;
+                    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+                    updateButtons();
+                }
+            });
+
+            nextButton.addEventListener("click", () => {
+                if (currentSlideIndex < slides.length - 1) {
+                    currentSlideIndex++;
+                    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+                    updateButtons();
+                }
+            });
+
+            updateButtons();
+        </script>
+    </body>
+</html>
