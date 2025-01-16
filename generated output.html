@@ -1,0 +1,282 @@
+<html>
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IMDA Bite-sized AI content</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Cinzel:wght@400..900&family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&family=Monsieur+La+Doulaise&family=Raleway+Dots&family=Sarpanch:wght@400;500;600;700;800;900&family=Titillium+Web:wght@200&display=swap" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                background-color: #f7f7f7;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                font-family: 'Space Mono', monospace;
+            }
+
+            /* Chat window container */
+            .chat-container {
+                position: relative;
+                width: 600px; /* Wider width for the chat box */
+                height: 500px;
+                background-color: #fff;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Header of the chat */
+            .chat-header {
+                padding: 12px 15px;
+                background-color: #eee;
+                border-bottom: 1px solid #ddd;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* Chat message area */
+            .chat-messages {
+                flex-grow: 1;
+                padding: 15px;
+                overflow-y: auto; /* Make the chat window scrollable */
+                display: flex;
+                flex-direction: column; /* Ensures messages appear from top to bottom */
+            }
+
+            /* Each message bubble */
+            .chat-bubble {
+                margin-bottom: 15px;
+                max-width: 80%;
+                padding: 10px 15px;
+                border-radius: 20px;
+                background-color: #f0f0f0;
+                word-wrap: break-word;
+            }
+
+            /* Sent messages on the right */
+            .sent {
+                background-color: #74AA9C;
+                color: #fff;
+                align-self: flex-end;
+                border-bottom-left-radius: 0;
+            }
+
+            /* Received messages on the left */
+            .received {
+                background-color: #e1e1e1;
+                color: #333;
+                align-self: flex-start;
+                border-bottom-right-radius: 0;
+            }
+
+            /* Input area at the bottom */
+            .chat-input {
+                display: flex;
+                padding: 10px;
+                background-color: #f7f7f7;
+                border-top: 1px solid #ddd;
+                position: relative;  /* Fixes it to the bottom */
+            }
+
+            .input-field {
+                flex-grow: 1;
+                padding: 10px;
+                border-radius: 20px;
+                border: 1px solid #ddd;
+                outline: none;
+                font-size: 1rem;
+            }
+
+            .send-btn {
+                margin-left: 10px;
+                padding: 10px 12px;
+                background-color: #74AA9C;
+                color: white;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+            }
+
+            .send-btn:hover {
+                background-color: #59867a;
+            }
+
+            /* Simple animation for chat messages entering */
+            .chat-bubble {
+                opacity: 0;
+                animation: slideIn 0.3s forwards;
+            }
+
+            @keyframes slideIn {
+                0% {
+                    transform: translateX(-30px);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            .container {
+                width: 100%;
+                max-width: 960px;
+                height: 540px;
+                background: #4e7ab1; /* Container background color */
+                border-radius: 20px; /* Rounded edges */
+                box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+                overflow: hidden; /* Ensures no overflow, helpful for rounded corners */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 30px;
+                text-align: center; /* Ensure text is centered */
+                margin: auto; /* Ensure the container is centered */
+            }
+
+            /* Navigation Container */
+            .navigation-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;  /* Center the button inside the container */
+                position: absolute;
+                top: 0px;
+                left: 10px;                   
+                z-index: 10;                 
+            }
+
+            .nav-button {
+                background-color: #cb2020;
+                color: #333;
+                border: none;
+                border-radius: 50%; /* Keep the circular shape */
+                width: 35px; /* Make the width slightly smaller */
+                height: 35px; /* Make the height slightly smaller */
+                font-size: 1.5rem;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.3s, transform 0.3s;
+                z-index: 11;
+                text-decoration: none;
+                display: flex;
+                justify-content: center;
+                align-items: center; /* Ensure text stays centered */
+            }
+
+            .nav-button:hover {
+                background-color: #d34a4a;
+                transform: scale(1.1);
+            }
+
+            .nav-button:active {
+                background-color: #872727;
+                transform: scale(1.05);
+            }
+
+            /* Animations */
+            @keyframes move-avatar {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            @keyframes bounceIn {
+                0% {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Chat Window -->
+        <div class="chat-container">
+            <!-- Navigation with Close Button -->
+            <div class="navigation-container">
+                <a href="page2.html" class="nav-button">x</a>
+            </div>
+
+            <!-- Chat Header -->
+            <div class="chat-header">
+                AI Chat - Generated Output
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-bubble sent">Hey, um... What does "generated output" mean?</div>
+                <div class="chat-bubble received">Generated output is the response an AI gives you based on what it's learned when you ask it to do something. </div>
+                <div class="chat-bubble sent">Oh! How does the AI know what to generate?</div>
+                <div class="chat-bubble received">AI knows what to generate because of its models, which are like its brain.</div>
+                <div class="chat-bubble received">These models are trained on massive amounts of data, helping the AI recognize patterns and relationships in that data.</div>
+                <div class="chat-bubble received">For example, a text model learns how words fit together to form sentences and ideas and an image model learns about shapes, colors, and objects.</div>
+                <div class="chat-bubble sent">Wow! What kind of outputs can AI generate?</div>
+                <div class="chat-bubble received">AI can generate all kinds of things depending on its purpose!</div>
+                <div class="chat-bubble sent">Does AI create this output randomly?</div>
+                <div class="chat-bubble received">Nope, it’s not random! The AI uses what it has learned from data to generate something that makes sense for your request.</div>
+                <div class="chat-bubble received">But if the input is unclear, the AI might give a response that feels "random" because it’s guessing what you want.</div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input">
+                <input type="text" class="input-field" id="userInput" placeholder="Type a message...">
+                <button class="send-btn" onclick="sendMessage()">⬆</button>
+            </div>
+        </div>
+
+        <script>
+            // Function to send a message
+            function sendMessage() {
+                const userInput = document.getElementById('userInput').value;
+
+                // Add the user's message to the chat
+                if (userInput.trim()) {
+                    const messageBubble = document.createElement('div');
+                    messageBubble.classList.add('chat-bubble', 'sent');
+                    messageBubble.innerText = userInput;
+
+                    // Append the message
+                    document.getElementById('chat-messages').appendChild(messageBubble);
+
+                    // Clear the input field after sending
+                    document.getElementById('userInput').value = '';
+                    const chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom after new message
+
+                    // Simulate a response from AI
+                    setTimeout(() => {
+                        const aiResponseBubble = document.createElement('div');
+                        aiResponseBubble.classList.add('chat-bubble', 'received');
+                        aiResponseBubble.innerText = 'That\'s an interesting question! Let me find the answer for you.';
+                        document.getElementById('chat-messages').appendChild(aiResponseBubble);
+                        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom after AI reply
+                    }, 1000);
+                }
+            }
+        </script>
+
+    </body>
+</html>

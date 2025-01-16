@@ -1,0 +1,357 @@
+<html>
+    <head> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> IMDA Bite-sized AI content </title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Cinzel:wght@400..900&family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&family=Monsieur+La+Doulaise&family=Raleway+Dots&family=Sarpanch:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400..800&family=Titillium+Web:wght@200&display=swap" rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Space Mono", serif;
+                background-image: url('https://i.pinimg.com/736x/5a/bf/5c/5abf5c8be376671a85980f1d58173fcc.jpg'); /* Path relative to your CSS file */;
+                background-size: cover;
+                background-position: center center;
+                border-radius: 20px;
+                box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 30px;
+                text-align: center;
+                margin-top: 0;  /* Remove any default margin */
+            }
+
+            body::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-color: rgba(214, 222, 229, 0.896); /* Adjust transparency and color as needed */
+                z-index: 1; /* Ensure it appears behind the content */
+            }
+
+            body * {
+                position: relative;
+                z-index: 2; /* Keep the content above the overlay */
+            }
+
+
+            h1.headline {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            margin-top: 0px;
+            color: #000000;
+            padding-top: 0;
+            }
+
+            p {
+                color: #000000;
+                margin-bottom: 10px;
+                margin-top: -2px;
+                font-family: "Space Mono", serif;
+                font-size: 1rem;
+            }
+            
+
+            .slider-container {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                margin-top: 0.5rem;
+                margin-bottom: 5rem;
+            }
+
+            .slider {
+                display: flex;
+                justify-content: space-around;
+                gap: 10px;
+                transition: all 0.3s ease;
+            }
+
+            .slide {
+                position: relative;
+                width: 200px;
+                height: 250px;
+                background: #ffffff;
+                border-radius: 15px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+            /* Initially set the width and hide the content */
+            .slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: opacity 0.3s ease;
+            }
+
+            .slide .content {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 20px;
+                background-color: rgba(0, 0, 0, 0.6);
+                color: #fff;
+                height: 0;
+                width: 100%;
+                opacity: 0;
+                transition: height 0.4s ease, opacity 0.4s ease;
+                overflow: hidden;
+            }
+
+            .slide:hover {
+                width: 250px; /* Expand the hovered card's width */
+            }
+
+            .slide:hover .content {
+                height: 60%; /* Show the content on hover */
+                opacity: 1;
+            }
+
+            /* On hover of one, contract the rest */
+            .slider .slide:not(:hover) {
+                width: 150px; /* Shrink other cards */
+            }
+
+            .slide:hover img {
+                opacity: 0.3; /* Dims image to highlight content */
+            }
+
+            .slide-title {
+                font-size: 1.1rem;
+                margin-bottom: 5px;
+                margin-top: -5;
+                color: #fff;
+                text-decoration: underline;
+            }
+
+            .slide-description {
+                font-size: 0.9rem;
+                color: #ddd;
+                margin-bottom: 10px;
+            }
+            .example-list {
+                font-style: italic; /* Makes the examples italic */
+                color: #cccccc; /* Sets a lighter color */
+                font-size: 0.7rem; /* Makes the examples slightly smaller */
+                margin-top: 5px; /* Adds some space above the examples */
+                margin-bottom: 5px;
+            }
+
+            /* Progress bar */
+            .progress-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: fixed;
+                bottom: 30px; /* Adds space from the bottom of the page */
+                left: 10%;
+                right: 10%; /* Ensures padding on both sides */
+                max-width: 700px; /* Caps the width for smaller screens */
+                margin: 0 auto;
+                padding: 10px;
+                background-color: #fefefe;
+                border-radius: 20px;
+                box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+                z-index: 5; /* Ensures the progress bar isn't overlaid by the buttons */
+            }
+
+            .progress-avatar {
+                font-size: 2rem;
+                margin-right: 15px; /* Adds some gap between the avatar and the bar */
+            }
+
+            .progress-bar {
+                flex: 1;
+                height: 30px;
+                background:#f5f5f5;
+                border-radius: 15px;
+                overflow: hidden;
+                position: relative;
+                box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+                margin-right: 15px; /* Space between bar and percentage */
+            }
+
+            .progress {
+            background: #B0C4DE;
+            height: 100%;
+            border-radius: 15px 0 0 15px; 
+        }
+
+            .progress-percentage {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #333;
+            }
+
+            /* Navigation Container */
+            .navigation-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: fixed;
+                bottom: 40px;
+                left: 5%; /* Adds space from the left edge */
+                right: 5%; /* Adds space from the right edge */
+                z-index: 10; /* Bring buttons to the foreground */
+            }
+
+            /* Navigation Buttons */
+            .nav-button {
+                background-color: #d6d6d652;
+                color: #333;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 10px;
+                font-size: 1rem;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.3s, transform 0.3s;
+                z-index: 11; /* Ensure buttons are visible over other elements */
+                text-decoration: none;
+            }
+
+            .nav-button:hover {
+                background-color: #9194f941;
+                transform: scale(1.1);
+            }
+
+            .nav-button:active {
+                background-color: #3f429952;
+                transform: scale(1.05);
+            }
+
+
+            /* Animations */
+            @keyframes move-avatar {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+
+            @keyframes bounceIn {
+                0% {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+        </style>
+    </head>
+
+    <body> 
+        
+        <div class="container">
+            <h1 class="headline">Types of Generative AI</h1>
+            <p>Now that you know how AI models learn and generate outputs, let’s dive into the different types of generative AI! </p>
+    
+            <div class="slider-container">
+                <div class="slider">
+                    <div class="slide">
+                        <img src="text.jpg" alt="Text Generator">
+                        <div class="content">
+                            <h3 class="slide-title">Text Generators</h3>
+                            <p class="slide-description">Perfect for conversation and content creation.</p>
+                            <p class="example-list">— Chat GPT, Google Gemini</p>
+                        </div>
+                    </div>
+    
+                    <div class="slide">
+                        <img src="image.jpg" alt="Image Generator">
+                        <div class="content">
+                            <h3 class="slide-title">Image Generators</h3>
+                            <p class="slide-description">Ideal for creating visuals and artwork.</p>
+                            <p class="example-list">— DALL-E, Leonardo.ai, Adobe Firefly</p>
+                        </div>
+                    </div>
+    
+                    <div class="slide">
+                        <img src="audio generation.jpg" alt="Audio Generator">
+                        <div class="content">
+                            <h3 class="slide-title">Audio Generators</h3>
+                            <p class="slide-description"> Use for music and audio design.</p>
+                            <p class="example-list">— MusicLM, voice cloning tools</p>
+                        </div>
+                    </div>
+    
+                    <div class="slide">
+                        <img src="code generation.jpg" alt="Code Generator">
+                        <div class="content">
+                            <h3 class="slide-title">Code Generators</h3>
+                            <p class="slide-description">Great for automating programming tasks.</p>
+                            <p class="example-list">—  Codex, Microsoft Copilot</p>
+                        </div>
+                    </div>
+    
+                    <div class="slide">
+                        <img src="video generation.jpg" alt="Video Generator">
+                        <div class="content">
+                            <h3 class="slide-title">Video Generators</h3>
+                            <p class="slide-description"> Use for creating AI-powered videos.</p>
+                            <p class="example-list">—  Synthesia, Runway</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+                
+
+            <div class="navigation-container">
+                <a href="page2.html" class="nav-button">⬅️</a> <!-- Left arrow -->
+                <a href="page4.html" class="nav-button">➡️</a> <!-- Right arrow -->
+            </div>
+            
+            <!-- Single progress bar container -->
+            <div class="progress-container">
+                <div class="progress-avatar">
+                    🤖
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar" style="width: 40%;"></div>
+                </div>
+                <div class="progress-percentage" id="progress-label">40%</div>
+            </div>
+            <script>
+                // Get the progress bar elements
+                let progressBar = document.getElementById('progress-bar');
+                let totalPages = document.querySelectorAll("#story-content p").length; // Count paragraphs as individual story sections
+                let currentPage = 0;
+                
+                // Function to update the progress bar based on current page in the story
+                function nextPage() {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        let progress = (currentPage / totalPages) * 100;  // Corrected calculation for percentage
+                        progressBar.style.width = progress + "%"; // Update progress bar width
+                        
+                        // Optional: Update label with the current progress
+                        document.getElementById('progress-label').innerText = "You're " + Math.round(progress) + "% through!";
+                    }
+                }
+            </script>
+    </body>
+</html>
